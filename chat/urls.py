@@ -1,18 +1,19 @@
 from django.urls import path, re_path, include
 from rest_framework import routers
-from .views import UserView, ConversationView, MessageView, login, signup, ping, refresh_token
+from . import views
 
 router = routers.DefaultRouter()
-router.register(r'users', UserView, 'users')
-router.register(r'conversation', ConversationView, 'conversation')
-router.register(r'messages', MessageView, 'messages')
+router.register(r'users', views.UserView, 'users')
+router.register(r'conversations', views.ConversationView, 'conversations')
+router.register(r'messages', views.MessageView, 'messages')
 
 urlpatterns = [
   path('', include(router.urls)),
   path('', include(router.urls)),
   path('', include(router.urls)),
-  re_path('ping', ping),
-  re_path('login', login),
-  re_path('signup', signup),
-  re_path('refresh', refresh_token),
+  re_path('messages', views.messages),
+  re_path('ping', views.ping),
+  re_path('login', views.login),
+  re_path('signup', views.signup),
+  re_path('refresh', views.refresh_token),
 ]
