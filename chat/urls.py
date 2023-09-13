@@ -11,9 +11,9 @@ urlpatterns = [
   path('', include(router.urls)),
   path('', include(router.urls)),
   path('', include(router.urls)),
-  re_path('messages', views.messages),
+  re_path('users/me', views.users_me),
   re_path('ping', views.ping),
   re_path('login', views.login),
   re_path('signup', views.signup),
-  re_path('refresh', views.refresh_token),
+  re_path('token/refresh', views.refresh_token),
 ]
