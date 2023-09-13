@@ -45,11 +45,13 @@ INSTALLED_APPS = [
     'chat'
 ]
 
+from config import REDIS_URL
+
 CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
-            'hosts': ['redis://default:kqkk0bDgToA2X5x1jTCy@containers-us-west-89.railway.app:7122']
+            'hosts': [REDIS_URL]
         },
     },
 }
