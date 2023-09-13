@@ -17,7 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-api_prefix = 'api/v1/'
+api_prefix = 'api/v2/'
 
 urlpatterns = [
     path(api_prefix+'admin/', admin.site.urls),
