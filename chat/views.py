@@ -47,14 +47,15 @@ from django.shortcuts import get_object_or_404
 
 
 @api_view(['GET'])
-def ping(request: Request):
+def ping(request):
   return Response({'message': 'Pong 🏓'})
 
 @api_view(['GET'])
 @authentication_classes([SessionAuthentication, TokenAuthentication])
 @permission_classes([IsAuthenticated])
-def messages(request: Request):
-  return Response({'message': f'messages by {request.user.name}'})
+def users_me(request: Request):
+  user_serializer = UserSerializer(instance=request.user)
+  return Response(user_serializer.data)
 
 @api_view(['POST'])
 def signup(request: Request):
@@ -93,7 +94,6 @@ def login(request: Request):
 @authentication_classes([SessionAuthentication, TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def refresh_token(request: Request):  
-  print(request.user.email)
   user = get_object_or_404(CustomUser, email=request.user.email)
 
   if not user:
