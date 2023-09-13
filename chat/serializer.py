@@ -4,7 +4,7 @@ from .models import CustomUser, Conversation, Message
 class UserSerializer(ModelSerializer):
   class Meta:
     model = CustomUser
-    fields = '__all__'
+    exclude = ['password', 'last_login']
 
 class ConversationSerializer(ModelSerializer):
   class Meta:
