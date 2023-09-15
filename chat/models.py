@@ -1,6 +1,8 @@
 from django.db import models
 from uuid import uuid4
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
+from django.core.validators import RegexValidator
+from django.core.exceptions import ValidationError
 
 # Create your models here.
 class UserManager(BaseUserManager):
@@ -23,12 +25,24 @@ class UserManager(BaseUserManager):
       raise ValueError('Superuser debe tener is_superuser=True.')
 
     return self.create_user(email, password, **extra_fields)
+  
+def validate_username(value):
+  if any(char.isdigit() for char in value):
+    raise ValidationError("El nombre de usuario no puede contener números.")
 
 class CustomUser(AbstractBaseUser):
   id = models.UUIDField(primary_key=True, default=uuid4)
-  name = models.CharField(max_length=150)
   email = models.EmailField(max_length=254, unique=True)
   password = models.CharField(max_length=128, null=True)
+  username = models.CharField(unique=True, max_length=30, validators=[
+    RegexValidator(
+      regex=r'^[a-zA-Z0-9_-]+$',
+      message="El nombre de usuario no puede contener otro tipo de caracteres que no sean guiones o guiones bajos.",
+      code='invalid_username'
+    ),
+    validate_username,
+  ])
+  avatar_url = models.URLField(null=True)
   created_at = models.DateTimeField(auto_now_add=True)
   updated_at = models.DateTimeField(auto_now=True)
   is_staff = models.BooleanField(default=False)
