@@ -45,7 +45,7 @@ INSTALLED_APPS = [
     'chat'
 ]
 
-from config import REDIS_URL
+from config import REDIS_URL, IN_DEVELOPMENT
 
 CHANNEL_LAYERS = {
     'default': {
@@ -143,4 +143,6 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CORS_ALLOWED_ORIGINS = []
+CORS_ALLOWED_ORIGINS = [
+  'http://localhost:3000' if IN_DEVELOPMENT else 'https://globalpage.com'
+]
