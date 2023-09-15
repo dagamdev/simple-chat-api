@@ -20,10 +20,22 @@ class ConversationView(ModelViewSet):
   serializer_class = ConversationSerializer
   queryset = Conversation.objects.all()
 
-  def retrieve(self, request: Request):
+  def list(self, request: Request):
     user = request.user
     conversations = Conversation.objects.filter(participants=user)
-    serializer = ConversationSerializer(conversations, many=True)
+
+    updated_conversations = []
+    for conversation in conversations:
+      participants = [participant for participant in conversation.participants.all() if participant != request.user]
+
+      updated_conversations.append({
+        'id': conversation.id,
+        'participants': participants,
+        'created_at': conversation.created_at,
+        'updated_at': conversation.updated_at
+      })
+
+    serializer = ConversationSerializer(updated_conversations, many=True)
 
     return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -40,6 +52,8 @@ class MessageView(ModelViewSet):
 
     return Response(serializer.data, status=status.HTTP_200_OK)
 
+
+#* Separate views 
 from .serializer import UserSerializer
 from rest_framework import status
 from rest_framework.authtoken.models import Token
@@ -56,6 +70,19 @@ def ping(request):
 def users_me(request: Request):
   user_serializer = UserSerializer(instance=request.user)
   return Response(user_serializer.data)
+
+@api_view(['get'])
+@authentication_classes([SessionAuthentication, TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def conversation_messages(request: Request, id: str):
+  try:
+    conversation = get_object_or_404(Conversation, id=id)
+    messages = Message.objects.filter(conversation=conversation)
+    serializer = MessageSerializer(messages, many=True)
+
+    return Response(serializer.data)
+  except:
+    return Response({'message': 'Invalid UUID identifier'}, status=status.HTTP_404_NOT_FOUND)    
 
 @api_view(['POST'])
 def signup(request: Request):
