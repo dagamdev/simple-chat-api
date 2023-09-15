@@ -14,4 +14,5 @@ urlpatterns = [
   re_path('login', views.login),
   re_path('signup', views.signup),
   re_path('token/refresh', views.refresh_token),
+  path('conversations/<str:id>/messages/', views.conversation_messages),
 ]
