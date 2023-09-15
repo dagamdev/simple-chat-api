@@ -9,8 +9,6 @@ router.register(r'messages', views.MessageView, 'messages')
 
 urlpatterns = [
   path('', include(router.urls)),
-  path('', include(router.urls)),
-  path('', include(router.urls)),
   re_path('users/me', views.users_me),
   re_path('ping', views.ping),
   re_path('login', views.login),
