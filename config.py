@@ -9,7 +9,7 @@ class EnvVariables():
   USER = env('USER')
   PASSWORD = env('PASSWORD')
   HOST = env('HOST')
-  PORT = env('PORT')
+  POSTGRESQL_PORT = env('POSTGRESQL_PORT')
 
   REDIS_URL = env('REDIS_URL')
   IN_DEVELOPMENT = env('IN_DEVELOPMENT')

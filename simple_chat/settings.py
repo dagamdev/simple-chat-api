@@ -104,7 +104,7 @@ DATABASES = {
         'USER': EnvVariables.USER,
         'PASSWORD': EnvVariables.PASSWORD,
         'HOST': EnvVariables.HOST,
-        'PORT': EnvVariables.PORT,
+        'PORT': EnvVariables.POSTGRESQL_PORT,
     }
 }
 
