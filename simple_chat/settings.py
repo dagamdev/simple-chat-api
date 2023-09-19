@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-+enae(u6o5pcq5x(09$s%z8l_l#!+z3=c)q8j4d*d*a1j)1-km
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['https://simple-chat-api-dagamdev.koyeb.app/api']
 
 
 # Application definition
