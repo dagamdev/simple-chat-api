@@ -6,6 +6,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework.request import Request
 from rest_framework.response import Response
+from django.shortcuts import get_object_or_404
 
 # Create your views here.
 @authentication_classes([TokenAuthentication])
@@ -13,6 +14,20 @@ from rest_framework.response import Response
 class UserView(ModelViewSet):
   serializer_class = UserSerializer
   queryset = CustomUser.objects.all()
+
+  def list(self, request: Request):
+    users = CustomUser.objects.all()
+    fields_param = request.query_params.get('fields', None)
+
+    if fields_param:
+      fields = fields_param.split(',')
+      users_serializer = UserSerializer(users.values(*fields), many=True)
+
+      return Response(users_serializer.data)
+
+    users_serializer = UserSerializer(users, many=True)
+    return Response(users_serializer.data)
+
 
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
@@ -26,7 +41,9 @@ class ConversationView(ModelViewSet):
 
     updated_conversations = []
     for conversation in conversations:
-      participants = [participant for participant in conversation.participants.all() if participant != request.user]
+      participants = [UserSerializer(participant).data for participant in conversation.participants.all() if participant != request.user]
+
+      print(participants)
 
       updated_conversations.append({
         'id': conversation.id,
@@ -35,9 +52,19 @@ class ConversationView(ModelViewSet):
         'updated_at': conversation.updated_at
       })
 
-    serializer = ConversationSerializer(updated_conversations, many=True)
+    # serializer = ConversationSerializer(updated_conversations, many=True)
 
-    return Response(serializer.data, status=status.HTTP_200_OK)
+    return Response(updated_conversations, status=status.HTTP_200_OK)
+
+  def retrieve(self, request: Request, pk):
+    conversation = Conversation.objects.get(id=pk)
+    conversation_dict = {
+      'id': conversation.id,
+      'participants': [UserSerializer(participant).data for participant in conversation.participants.all() if request.user != participant],
+      'created_at': conversation.created_at,
+      'updated_at': conversation.updated_at
+    }
+    return Response(conversation_dict)
 
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
@@ -57,7 +84,6 @@ class MessageView(ModelViewSet):
 from .serializer import UserSerializer
 from rest_framework import status
 from rest_framework.authtoken.models import Token
-from django.shortcuts import get_object_or_404
 
 
 @api_view(['GET'])
