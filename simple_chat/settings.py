@@ -19,33 +19,35 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
+from config import EnvVariables
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-+enae(u6o5pcq5x(09$s%z8l_l#!+z3=c)q8j4d*d*a1j)1-km'
+SECRET_KEY = EnvVariables.DJANGO_SECRET_KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['simple-chat-api-dagamdev.koyeb.app']
+ALLOWED_HOSTS = [
+  'localhost',
+  'simple-chat-api-dagamdev.koyeb.app'
+]
 
 
 # Application definition
 
 INSTALLED_APPS = [
-    'daphne',
+    'channels',
+    'chat.apps.ChatConfig',
+    'corsheaders',
+    'rest_framework',
+    'rest_framework.authtoken',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'rest_framework',
-    'rest_framework.authtoken',
-    'corsheaders',
-    'channels',
-    'chat'
 ]
-
-from config import EnvVariables
 
 CHANNEL_LAYERS = {
     'default': {
@@ -87,7 +89,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'simple_chat.wsgi.application'
+# WSGI_APPLICATION = 'simple_chat.wsgi.application'
 ASGI_APPLICATION = 'simple_chat.asgi.application'
 
 

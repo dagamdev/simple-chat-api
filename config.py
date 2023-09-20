@@ -4,6 +4,8 @@ env = environ.Env()
 environ.Env.read_env()
 
 class EnvVariables():
+  DJANGO_SECRET_KEY = env('DJANGO_SECRET_KEY')
+  
   ENGINE = env('ENGINE')
   NAME = env('NAME')
   USER = env('USER')
