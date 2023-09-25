@@ -21,5 +21,5 @@ api_prefix = 'api/v2/'
 
 urlpatterns = [
     path(api_prefix+'admin/', admin.site.urls),
-    path(api_prefix, include('chat.urls'))
+    # path(api_prefix, include('chat.urls'))
 ]
