@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
+from os import environ
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -19,9 +20,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
-from config import EnvVariables
+# from config import EnvVariables
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = EnvVariables.DJANGO_SECRET_KEY
+# SECRET_KEY = EnvVariables.DJANGO_SECRET_KEY
+SECRET_KEY = environ.get('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -91,12 +93,12 @@ DATABASES = {
         # 'ENGINE': 'django.db.backends.sqlite3',
         # 'NAME': BASE_DIR / 'db.sqlite3',
 
-        'ENGINE': EnvVariables.ENGINE,
-        'NAME': EnvVariables.NAME,
-        'USER': EnvVariables.USER,
-        'PASSWORD': EnvVariables.PASSWORD,
-        'HOST': EnvVariables.HOST,
-        'PORT': EnvVariables.POSTGRESQL_PORT,
+        'ENGINE': environ.get('ENGINE'),
+        'NAME': environ.get('NAME'),
+        'USER': environ.get('USER'),
+        'PASSWORD': environ.get('PASSWORD'),
+        'HOST': environ.get('HOST'),
+        'PORT': environ.get('POSTGRESQL_PORT'),
     }
 }
 
@@ -143,7 +145,7 @@ CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
-            'hosts': [EnvVariables.REDIS_URL]
+            'hosts': [environ.get('REDIS_URL')]
         },
     },
 }
@@ -154,5 +156,5 @@ CHANNEL_LAYERS = {
 # DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOWED_ORIGINS = [
-  'http://localhost:3000' if EnvVariables.IN_DEVELOPMENT else 'https://globalpage.com'
+  'http://localhost:3000' if environ.get('IN_DEVELOPMENT') else 'https://globalpage.com'
 ]
