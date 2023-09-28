@@ -37,9 +37,8 @@ ALLOWED_HOSTS = [
 # Application definition
 
 INSTALLED_APPS = [
-    'daphne',
     'channels',
-    'chat.apps.ChatConfig',
+    'chat',
     'corsheaders',
     'rest_framework',
     'rest_framework.authtoken',
@@ -140,7 +139,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-ASGI_APPLICATION = 'simple_chat.asgi.application'
+ASGI_APPLICATION = 'simple_chat.routing.application'
 
 CHANNEL_LAYERS = {
     'default': {
