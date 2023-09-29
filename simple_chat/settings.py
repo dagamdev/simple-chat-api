@@ -37,8 +37,8 @@ ALLOWED_HOSTS = [
 # Application definition
 
 INSTALLED_APPS = [
-    'channels',
     'chat',
+    'channels',
     'corsheaders',
     'rest_framework',
     'rest_framework.authtoken',
@@ -156,5 +156,5 @@ CHANNEL_LAYERS = {
 # DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOWED_ORIGINS = [
-  'http://localhost:3000' if environ.get('IN_DEVELOPMENT') else 'https://globalpage.com'
+  'http://localhost:3000' if environ.get('IN_DEVELOPMENT') else 'https://chat-simple.vercel.app'
 ]
