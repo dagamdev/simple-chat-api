@@ -30,7 +30,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
   'localhost',
-  'simple-chat-api-dagamdev.koyeb.app'
+  'simple-chat-api-dagamdev.koyeb.app',
+  'chat-simple.vercel.app'
 ]
 
 

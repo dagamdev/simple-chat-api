@@ -10,8 +10,7 @@ application = ProtocolTypeRouter({
   # "websocket": AuthMiddlewareStack(URLRouter(routing.websocket_urlpatterns))
   
   'websocket': AllowedHostsOriginValidator(
-    AuthMiddlewareStack(URLRouter(chat.routing.websocket_urlpatterns)),
-    ['http://localhost:3000' if environ.get('IN_DEVELOPMENT') else 'https://chat-simple.vercel.app']
+    AuthMiddlewareStack(URLRouter(chat.routing.websocket_urlpatterns))
   )
   # "websocket": URLRouter(routing.websocket_urlpatterns),
 })
