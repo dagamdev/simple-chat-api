@@ -27,7 +27,16 @@ class UserView(ModelViewSet):
 
     users_serializer = UserSerializer(users, many=True)
     return Response(users_serializer.data)
-
+  
+  def partial_update(self, request: Request, pk):
+    user = get_object_or_404(CustomUser, pk=pk)
+    serializer = UserSerializer(user, data=request.data, partial=True)
+    
+    if serializer.is_valid():
+      serializer.save()
+      return Response(serializer.data, status=status.HTTP_200_OK)
+    else:
+      return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
@@ -66,18 +75,18 @@ class ConversationView(ModelViewSet):
     }
     return Response(conversation_dict)
 
-@authentication_classes([TokenAuthentication])
-@permission_classes([IsAuthenticated])
+# @authentication_classes([TokenAuthentication])
+# @permission_classes([IsAuthenticated])
 class MessageView(ModelViewSet):
   serializer_class = MessageSerializer
   queryset = Message.objects.all()
 
-  def retrieve(self, request: Request):
-    user = request.user
-    messages = Message.objects.filter(author=user)
-    serializer = MessageSerializer(messages, many=True)
+  # def retrieve(self, request: Request):
+  #   user = request.user
+  #   messages = Message.objects.filter(author=user)
+  #   serializer = MessageSerializer(messages, many=True)
 
-    return Response(serializer.data, status=status.HTTP_200_OK)
+  #   return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 #* Separate views 
