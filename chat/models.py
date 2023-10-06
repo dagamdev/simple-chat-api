@@ -42,7 +42,7 @@ class CustomUser(AbstractBaseUser):
     ),
     validate_username,
   ])
-  avatar_url = models.URLField(null=True)
+  avatar_url = models.URLField(null=True, max_length=400)
   created_at = models.DateTimeField(auto_now_add=True)
   updated_at = models.DateTimeField(auto_now=True)
   is_staff = models.BooleanField(default=False)
